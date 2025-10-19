@@ -89,7 +89,7 @@ if($_POST) {
                         <div class="contact-icon">📞</div>
                         <div class="contact-text">
                             <h3>Phone</h3>
-                            <p>+91 8394848982<br>Mon-Fri: 9AM-6PM EST</p>
+                            <p>+91 8394848982<br>Mon-Fri: 9AM-6PM IST</p>
                         </div>
                     </div>
                     

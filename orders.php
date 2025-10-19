@@ -36,7 +36,7 @@ $orders = $order->getUserOrders($_SESSION['user_id']);
                 </div>
                 
                 <div class="order-details">
-                    <p><strong>Total Amount:</strong> $<?php echo $order_row['total_amount']; ?></p>
+                    <p><strong>Total Amount:</strong> ₹<?php echo number_format($order_row['total_amount'], 2); ?></p>
                     <p><strong>Shipping Address:</strong> <?php echo $order_row['address']; ?></p>
                     
                     <?php if($order_row['payment_id']): ?>

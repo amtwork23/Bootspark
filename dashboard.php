@@ -27,6 +27,7 @@ $orders = $order->getUserOrders($_SESSION['user_id']);
                 <a href="products.php" class="action-btn">Continue Shopping</a>
                 <a href="cart.php" class="action-btn">View Cart</a>
                 <a href="orders.php" class="action-btn">View Orders</a>
+                <a href="profile.php" class="action-btn">Profile Picture</a>
             </div>
         </div>
         
@@ -41,7 +42,7 @@ $orders = $order->getUserOrders($_SESSION['user_id']);
                 ?>
                 <div class="order-item">
                     <p><strong>Order #<?php echo $order_row['id']; ?></strong></p>
-                    <p>Amount: $<?php echo $order_row['total_amount']; ?></p>
+                    <p>Amount: ₹<?php echo number_format($order_row['total_amount'], 2); ?></p>
                     <p>Status: <span class="status-<?php echo $order_row['status']; ?>">
                         <?php echo ucfirst($order_row['status']); ?>
                     </span></p>

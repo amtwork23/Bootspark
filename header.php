@@ -98,6 +98,118 @@ require_once "functions.php";
             background: #2980b9;
         }
         
+        /* User Profile Styles */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+        
+        .profile-picture {
+            position: relative;
+        }
+        
+        .profile-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .profile-img:hover {
+            border-color: white;
+            transform: scale(1.1);
+        }
+        
+        .profile-placeholder {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .profile-placeholder:hover {
+            background: white;
+            color: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .user-menu {
+            position: relative;
+        }
+        
+        .user-name {
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .user-name:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .user-profile:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.3s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            color: var(--secondary);
+        }
+        
+        .dropdown-menu a:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .dropdown-menu a:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+        
         /* Footer Styles */
         footer {
             background: var(--dark);
@@ -178,9 +290,34 @@ require_once "functions.php";
                 </nav>
                 <div class="auth-buttons">
                     <?php if(isset($_SESSION['user_id'])): ?>
-                        <a href="dashboard.php"><button>Dashboard</button></a>
-                        <a href="cart.php"><button>Cart</button></a>
-                        <a href="logout.php"><button>Logout</button></a>
+                        <div class="user-profile">
+                            <?php
+                            // Get user profile picture
+                            require_once "config/database.php";
+                            require_once "classes/User.php";
+                            $database = new Database();
+                            $db = $database->getConnection();
+                            $user = new User($db);
+                            $profile_picture = $user->getProfilePicture($_SESSION['user_id']);
+                            ?>
+                            <div class="profile-picture">
+                                <?php if($profile_picture && file_exists($profile_picture)): ?>
+                                    <img src="<?php echo $profile_picture; ?>" alt="Profile" class="profile-img">
+                                <?php else: ?>
+                                    <div class="profile-placeholder"><?php echo strtoupper(substr($_SESSION['user_name'], 0, 1)); ?></div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="user-menu">
+                                <span class="user-name"><?php echo $_SESSION['user_name']; ?></span>
+                                <div class="dropdown-menu">
+                                    <a href="dashboard.php">Dashboard</a>
+                                    <a href="profile.php">Profile</a>
+                                    <a href="orders.php">Orders</a>
+                                    <a href="cart.php">Cart</a>
+                                    <a href="logout.php">Logout</a>
+                                </div>
+                            </div>
+                        </div>
                     <?php else: ?>
                         <a href="login.php"><button>Login</button></a>
                         <a href="register.php"><button>Register</button></a>

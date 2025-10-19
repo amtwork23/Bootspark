@@ -28,8 +28,11 @@ $products = $product->readAll();
             <?php while($row = $products->fetch(PDO::FETCH_ASSOC)): ?>
             <div class="product-card">
                 <div class="product-image">
-                    <!-- UPDATED IMAGE CODE -->
-                    <img src="<?php echo getProductImage($row['name']); ?>" alt="<?php echo $row['name']; ?>">
+                    <!-- UPDATED IMAGE CODE WITH ERROR HANDLING -->
+                    <img src="<?php echo getProductImage($row['name']); ?>" 
+                         alt="<?php echo $row['name']; ?>" 
+                         onerror="this.src='https://via.placeholder.com/300x200?text=Image+Not+Available'; this.onerror=null;"
+                         loading="lazy">
                 </div>
                 <div class="product-info">
                     <h3 class="product-name"><?php echo $row['name']; ?></h3>
@@ -131,6 +134,16 @@ $products = $product->readAll();
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: opacity 0.3s ease;
+    }
+    
+    .product-image img[src*="placeholder"] {
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        font-size: 0.9rem;
     }
     
     .product-info {

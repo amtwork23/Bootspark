@@ -1,6 +1,12 @@
 <?php
 // functions.php
 function getProductImage($productName) {
+    // Check if local image exists first
+    $localImagePath = "assets/images/" . strtolower(str_replace(' ', '_', $productName)) . ".jpg";
+    if(file_exists($localImagePath)) {
+        return $localImagePath;
+    }
+    
     $imageMap = [
         // Original Products
         'Nike Air Max' => 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60',

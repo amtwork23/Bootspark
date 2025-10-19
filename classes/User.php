@@ -7,6 +7,7 @@ class User {
     public $name;
     public $email;
     public $password;
+    public $profile_picture;
     public $created_at;
     
     public function __construct($db) {
@@ -58,6 +59,43 @@ class User {
     // Verify password
     public function verifyPassword($password) {
         return password_verify($password, $this->password);
+    }
+    
+    // Get user profile picture
+    public function getProfilePicture($user_id) {
+        $query = "SELECT profile_picture FROM " . $this->table_name . " WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $user_id);
+        $stmt->execute();
+        
+        if($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $row['profile_picture'];
+        }
+        return null;
+    }
+    
+    // Update profile picture
+    public function updateProfilePicture($user_id, $profile_picture_path) {
+        $query = "UPDATE " . $this->table_name . " SET profile_picture = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $profile_picture_path);
+        $stmt->bindParam(2, $user_id);
+        
+        return $stmt->execute();
+    }
+    
+    // Get user details including profile picture
+    public function getUserDetails($user_id) {
+        $query = "SELECT id, name, email, profile_picture, created_at FROM " . $this->table_name . " WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $user_id);
+        $stmt->execute();
+        
+        if($stmt->rowCount() > 0) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return null;
     }
 }
 ?>
